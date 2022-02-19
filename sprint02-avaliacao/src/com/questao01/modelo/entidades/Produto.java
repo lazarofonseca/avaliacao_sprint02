@@ -84,8 +84,11 @@ public class Produto implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Produto [id=" + id + ", nome=" + nome + ", descricao=" + descricao + ", desconto=" + desconto
-				+ ", dataInicio=" + dataInicio + "]";
+		return "Id: " + id + "\n" +
+				"Nome: " + nome + "\n" +
+				"Descricao: " + descricao + "\n" +
+				"Desconto: " + desconto + "\n" +
+				"Data da Oferta: " + dataInicio;
 	}
 
 }

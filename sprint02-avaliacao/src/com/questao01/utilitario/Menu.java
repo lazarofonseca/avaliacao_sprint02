@@ -1,8 +1,9 @@
 package com.questao01.utilitario;
 
-import java.util.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 import java.util.Scanner;
 
 import com.questao01.modelo.dao.DaoFactory;
@@ -45,15 +46,54 @@ public class Menu {
 		
 		produtoDao.salvar(produto);
 		
-		
+		System.out.println("");
 		
 	}
 	
-	public static void atualizar() {
+	public static void atualizar() throws ParseException{
+		
+		Scanner sc = new Scanner(System.in);
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		ProdutoDao produtoDao = DaoFactory.createProdutoDao();
+		
+		System.out.println("Digite i ID do produto a ser atualizado: ");
+		int id = sc.nextInt();
+		sc.nextLine();
+		
+		Produto produto = new Produto();
+		produto = produtoDao.buscaPorId(id); // Busca o produto a ser atualizado
+		
+		System.out.println("Digite o nome do produto: ");
+		String nome = sc.nextLine();
+		produto.setNome(nome);
+		System.out.println("Digite a descrição do produto: ");
+		String descricao = sc.nextLine();
+		produto.setDescricao(descricao);
+		System.out.println("Digite o valor do desconto: ");
+		Double desconto = sc.nextDouble();
+		produto.setDesconto(desconto);
+		System.out.println("Digite a data da oferta: ");
+		String dataString = sc.next();
+		Date data = (Date) sdf.parse(dataString);
+		produto.setDataInicio(data);
+		
+		produtoDao.atualizar(produto);
+		System.out.println("");
 		
 	}
 	
 	public static void deletar() {
+		
+		Scanner sc = new Scanner(System.in);
+		
+		ProdutoDao produtoDao = DaoFactory.createProdutoDao();
+		
+		System.out.println("Digite o ID do produto a ser deletado: ");
+		int id = sc.nextInt();
+		sc.nextLine();
+		
+		produtoDao.delete(id);
+		System.out.println("");
 		
 	}
 	
@@ -63,9 +103,31 @@ public class Menu {
 	
 	public static void buscaPorId() {
 		
+		Scanner sc = new Scanner(System.in);
+		ProdutoDao produtoDao = DaoFactory.createProdutoDao();
+		
+		System.out.println("Digite o ID do produto a ser buscado: ");
+		int id = sc.nextInt();
+		sc.nextLine();
+		Produto produto = new Produto();
+		
+		produto = produtoDao.buscaPorId(id);
+		System.out.println("----PRODUTO----");
+		System.out.println(produto);
+		System.out.println("");
+		
 	}
 	
 	public static void buscaTodos() {
+		
+		ProdutoDao produtoDao = DaoFactory.createProdutoDao();
+		List<Produto> ListaProdutos = produtoDao.buscar();
+		
+		System.out.println("------LISTA DE OFERTAS DE PRODUTOS-------");
+		for(Produto prod : ListaProdutos) {
+			System.out.println(prod);
+			System.out.println();
+		}
 		
 	}
 
