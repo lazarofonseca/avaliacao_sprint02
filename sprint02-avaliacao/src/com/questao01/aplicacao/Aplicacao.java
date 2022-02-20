@@ -9,46 +9,16 @@ import java.util.Scanner;
 import javax.imageio.IIOParam;
 
 import com.questao01.aplicacao.db.exception.DbExceptionEnterInvalid;
+import com.questao01.controller.Menu;
+import com.questao01.db.DB;
 import com.questao01.modelo.dao.DaoFactory;
 import com.questao01.modelo.dao.ProdutoDao;
 import com.questao01.modelo.entidades.Produto;
-import com.questao01.utilitario.Menu;
 
 public class Aplicacao {
 
 	public static void main(String[] args) throws ParseException {
 
-		/*
-		 * Scanner sc = new Scanner(System.in);
-		 * 
-		 * ProdutoDao produtoDao = DaoFactory.createProdutoDao();
-		 * 
-		 * Produto produtoSalvo = new Produto(null, "Celular", "Celular Sansumg", 200.0,
-		 * new Date());
-		 * 
-		 * produtoDao.salvar(produtoSalvo);
-		 * 
-		 * 
-		 * Produto produtoBuscado = produtoDao.buscaPorId(1);
-		 * 
-		 * produtoSalvo = produtoDao.buscaPorId(2);
-		 * 
-		 * produtoSalvo.setNome("SmartFone");
-		 * produtoSalvo.setDescricao("SmartFone 14 polegadas");
-		 * produtoDao.atualizar(produtoSalvo);
-		 * 
-		 * 
-		 * System.out.println("Digite o id do produto a ser deletado: "); int id =
-		 * sc.nextInt();
-		 * 
-		 * produtoDao.delete(id);
-		 * 
-		 * 
-		 * List<Produto> produtos = produtoDao.buscar();
-		 * 
-		 * for (Produto prod : produtos) { System.out.println(prod); }
-		 */
-		
 		Scanner sc = new Scanner(System.in);
 		int opcao;
 		
@@ -77,7 +47,8 @@ public class Aplicacao {
 		}while(opcao != 0);
 		
 		System.out.println("------------Sistema encerrado---------------");
-
+		sc.close();
+		DB.closeConnection();
 	}
 
 }

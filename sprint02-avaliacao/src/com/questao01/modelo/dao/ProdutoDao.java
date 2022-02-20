@@ -11,7 +11,7 @@ public interface ProdutoDao {
 	void delete(Integer id);
 	Produto buscaPorId(Integer id);
 	List<Produto> buscar();
-	List<Produto> buscaContendo(Produto produto, String entrada);
+	List<Produto> buscaContendo(String entrada);
 	
 
 }

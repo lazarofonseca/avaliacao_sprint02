@@ -164,7 +164,7 @@ public class ProdutoDaoJDBC implements ProdutoDao {
 			List<Produto> listaProdutos = new ArrayList<>();
 
 			while (rs.next()) {
-				Produto produto = new Produto();
+				Produto produto = criaProduto(rs);
 				produto.setId(rs.getInt("id"));
 				produto.setNome(rs.getString("nome"));
 				produto.setDescricao(rs.getString("descricao"));
@@ -182,9 +182,34 @@ public class ProdutoDaoJDBC implements ProdutoDao {
 	}
 
 	@Override
-	public List<Produto> buscaContendo(Produto produto, String entrada) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Produto> buscaContendo(String entrada) {
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		try {
+			pst = conn.prepareStatement("SELECT * FROM produto WHERE nome LIKE "
+					+ "?");
+			
+			List<Produto> listaProdutos = new ArrayList<>();
+			pst.setString(1, '%' +entrada + '%');
+			rs = pst.executeQuery();
+			while(rs.next()) {
+				Produto produto = criaProduto(rs);
+				produto.setId(rs.getInt("id"));
+				produto.setNome(rs.getString("nome"));
+				produto.setDescricao(rs.getString("descricao"));
+				produto.setDesconto(rs.getDouble("desconto"));
+				produto.setDataInicio(rs.getDate("data_inicio"));
+				listaProdutos.add(produto);
+			}
+
+			return listaProdutos;
+			
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(pst);
+			DB.closeResultSet(rs);
+		}
 	}
 
 }

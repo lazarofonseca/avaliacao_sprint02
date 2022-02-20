@@ -1,7 +1,8 @@
-package com.questao01.utilitario;
+package com.questao01.controller;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
@@ -9,6 +10,7 @@ import java.util.Scanner;
 import com.questao01.modelo.dao.DaoFactory;
 import com.questao01.modelo.dao.ProdutoDao;
 import com.questao01.modelo.entidades.Produto;
+import com.questao01.utilitario.Utilitario;
 
 public class Menu {
 	
@@ -16,12 +18,12 @@ public class Menu {
 		System.out.println("-------CADASTRO DE OFERTAS DE PRODUTOS--------------");
 		System.out.println("Digite a opção desejada:");
 		System.out.println("1 - para INSERIR uma oferta");
-		System.out.println("2 - para ATUALIZ uma oferta");
+		System.out.println("2 - para ATUALIZAR uma oferta");
 		System.out.println("3 - para DELETAR uma oferta");
 		System.out.println("4 - para listar as palavras que contém?");
 		System.out.println("5 - para BUSCA uma oferta especifica");
 		System.out.println("6 - para listar TODAS as ofertas");
-		System.out.println("7 - para SAIR");
+		System.out.println("0 - para SAIR");
 		System.out.println("-----------------------------------------------------");
 	}
 	
@@ -29,6 +31,7 @@ public class Menu {
 		
 		Scanner sc = new Scanner(System.in);
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		List<Produto> produtos = new ArrayList<Produto>();
 		
 		ProdutoDao produtoDao = DaoFactory.createProdutoDao();
 		
@@ -45,6 +48,8 @@ public class Menu {
 		Produto produto = new Produto(null, nome, descricao, desconto, data);
 		
 		produtoDao.salvar(produto);
+		
+		Utilitario.geraOfertas();
 		
 		System.out.println("");
 		
@@ -99,9 +104,26 @@ public class Menu {
 	
 	public static void buscaContendo() {
 		
+		Scanner sc = new Scanner(System.in);
+		ProdutoDao produtoDao = DaoFactory.createProdutoDao();
+		List<Produto> listaProdutos = new ArrayList<Produto>();
+		
+		System.out.println("Digite os caracteres da busca: ");
+		String entrada = sc.nextLine();
+		
+		listaProdutos = produtoDao.buscaContendo(entrada);
+		System.out.println("----PRODUTOS OFERTADOS----");
+		for(Produto prod : listaProdutos) {
+			System.out.println(prod.getId());
+			System.out.println(prod.getNome());
+			System.out.println(prod.getDescricao());
+			System.out.println();
+		}
+		System.out.println("");
+		
 	}
 	
-	public static void buscaPorId() {
+	public static void buscaPorId() throws ParseException {
 		
 		Scanner sc = new Scanner(System.in);
 		ProdutoDao produtoDao = DaoFactory.createProdutoDao();
@@ -112,9 +134,13 @@ public class Menu {
 		Produto produto = new Produto();
 		
 		produto = produtoDao.buscaPorId(id);
+		if(produto == null) {
+			Menu.salvar();
+		}else {
 		System.out.println("----PRODUTO----");
 		System.out.println(produto);
 		System.out.println("");
+		}
 		
 	}
 	
