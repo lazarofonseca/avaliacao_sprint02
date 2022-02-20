@@ -1,8 +1,12 @@
 package com.questao02.aplicacao;
 
+import java.util.List;
 import java.util.Scanner;
 
 import com.questao02.controller.VerificaSentimento;
+import com.questao02.modelo.Sentimento;
+import com.questao02.modelo.dao.DaoFactory;
+import com.questao02.modelo.dao.SentimentoDao;
 
 public class Aplicacao {
 
@@ -17,6 +21,7 @@ public class Aplicacao {
 		int divertido = VerificaSentimento.divertido(entrada);
 		int chateado = VerificaSentimento.chateaco(entrada);
 		String sentimento;
+		SentimentoDao objDao = DaoFactory.createSentimentoDao();
 		
 		if(divertido == chateado) {
 			sentimento = "neutro";
@@ -27,6 +32,15 @@ public class Aplicacao {
 		}
 		
 		System.out.println("Saída: " + sentimento);
+		objDao.salvar(sentimento);
+		List<Sentimento> lista = objDao.buscar();
+		System.out.println();
+		System.out.println();
+		System.out.println("--------------Saída-------------------");
+		for(Sentimento sent : lista) {
+			System.out.println("Id: " + sent.getId());
+			System.out.println("Status: " + sent.getStatus());
+		}
 
 	}
 
